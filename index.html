@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tailnews</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="font-mono">
+    <!-- header -->
+    <header class="w-auto md:w-1/2 mx-auto flex justify-center items-center gap-4 py-2 bg-orange-500 text-sm flex-col md:flex-row">
+        <h1>Tailnews - by Urffan</h1>
+    </header>
+    <!-- content -->
+    <section class="w-auto md:w-1/2 mx-auto flex flex-col"
+        x-data="{ 
+            news: null,
+            getNews() {
+                fetch('https://newsapi.org/v2/top-headlines?country=id&apiKey=1a6492b3fc1c4e6dbd314ecbbf71125f')
+                    .then((response) => response.json())
+                    .then((json) => this.news = json);
+            }
+        }"
+        x-init="getNews()"
+    >        
+        <template x-for="(n, index) in news.articles">
+            <div class="bg-slate-50 p-2">            
+                <span class="text-gray-500" x-text="index + 1"></span>
+                <a :href="n.url" x-text="n.title" target="_blank">Title</a>
+                <p class="text-gray-500">(<span x-text="n.source.name"></span>)</p>
+                <p class="text-gray-500 text-xs">Author : <span x-text="n.author"></span></p>            
+            </div>
+        </template>
+    </section>
+</body>
+</html>
